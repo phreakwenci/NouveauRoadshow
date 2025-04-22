@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouveau Roadshow - We Take Indie Films on the Road</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap');
+        
+        :root {
+            --primary: #6b21a8;
+            --secondary: #f59e0b;
+            --dark: #111827;
+            --light: #f3f4f6;
+        }
+        
+        body {
+            font-family: 'Space Mono', monospace;
+            background-color: var(--dark);
+            color: var(--light);
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjMTExMTI3Ij48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDVMNSAwWk02IDRMNCA2Wk0tMSAxTDEgLTFaIiBzdHJva2U9IiMxYzFmMjMiIHN0cm9rZS13aWR0aD0iMSI+PC9wYXRoPgo8L3N2Zz4=');
+        }
+        
+        h1, h2, h3, .font-display {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        .film-grain {
+            position: relative;
+        }
+        
+        .film-grain::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMwMDAiIG9wYWNpdHk9IjAuOCI+PC9yZWN0PjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjbW9pc2UpIiBvcGFjaXR5PSIwLjA1Ij48L3JlY3Q+PGRlZnM+PGZpbHRlciBpZD0ibW9pc2UiIHg9IjAiIHk9IjAiPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjA1IiBudW1PY3RhdmVzPSI1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIj48L2ZlVHVyYnVsZW5jZT48L2ZpbHRlcj48L2RlZnM+PC9zdmc+');
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .marquee-effect {
+            animation: marquee 20s linear infinite;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .next-up-card {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .next-up-card.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .next-up-card:hover {
+            transform: translateY(0) scale(1.05);
+        }
+        
+        .ticket-tear {
+            position: relative;
+        }
+        
+        .ticket-tear::after {
+            content: "";
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background-color: var(--dark);
+            border-radius: 50%;
+            box-shadow: inset 0 0 0 2px var(--secondary);
+        }
+        
+        .ticket-tear::before {
+            content: "";
+            position: absolute;
+            right: -10px;
+            top: 0;
+            height: 100%;
+            width: 10px;
+            background-color: var(--dark);
+            clip-path: polygon(0 0, 100% 20%, 100% 80%, 0 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-black/80 backdrop-blur-md sticky top-0 z-50 border-b border-purple-900">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-display text-yellow-400">NOUVEAU ROADSHOW</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="hover:text-yellow-400 transition">About</a>
+                <a href="#filmmakers" class="hover:text-yellow-400 transition">For Filmmakers</a>
+                <a href="#theaters" class="hover:text-yellow-400 transition">For Theaters</a>
+                <a href="#tour" class="hover:text-yellow-400 transition">Tour Schedule</a>
+                <a href="#press" class="hover:text-yellow-400 transition">Press</a>
+            </div>
+            <button class="md:hidden text-white">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="film-grain relative h-screen flex items-center overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/80 z-0"></div>
+        <div class="absolute inset-0 z-0">
+            <div class="h-full w-full flex">
+                <div class="marquee-effect flex whitespace-nowrap items-center">
+                    <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Cinema" class="h-full w-auto mx-4 object-cover opacity-70">
+                    <img src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Film" class="h-full w-auto mx-4 object-cover opacity-70">
+                    <img src="https://images.unsplash.com/photo-1542204165-65bfec72f809?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Movie" class="h-full w-auto mx-4 object-cover opacity-70">
+                    <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Cinema" class="h-full w-auto mx-4 object-cover opacity-70">
+                    <img src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Film" class="h-full w-auto mx-4 object-cover opacity-70">
+                    <img src="https://images.unsplash.com/photo-1542204165-65bfec72f809?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Movie" class="h-full w-auto mx-4 object-cover opacity-70">
+                </div>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <h1 class="text-6xl md:text-8xl font-display text-yellow-400 mb-4">WE DON'T STREAM — WE PROJECT</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">Independent. Theatrical. Unapologetic. Taking bold genre films on the road to underserved audiences.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#filmmakers" class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-6 rounded-full transition flex items-center">
+                    <i class="fas fa-film mr-2"></i> Submit Your Film
+                </a>
+                <a href="#theaters" class="bg-transparent hover:bg-purple-900 border-2 border-yellow-400 text-yellow-400 font-bold py-3 px-6 rounded-full transition flex items-center">
+                    <i class="fas fa-ticket-alt mr-2"></i> Book a Screening
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gradient-to-b from-black via-purple-900/20 to-black">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
+                    <h2 class="text-4xl font-display text-yellow-400 mb-6">CINEMA DESERVES A SECOND LIFE</h2>
+                    <p class="text-lg mb-6">Nouveau Roadshow reinvents theatrical-first distribution for bold, genre-based films — horror, action, sci-fi, and dark comedy — prioritizing underrepresented creators, underserved audiences, and independent cinemas.</p>
+                    <p class="text-lg mb-6">We deliver curated film slates, revenue-sharing deals, bundled marketing materials, and a touring model inspired by punk bands and roadshow legends.</p>
+                    <div class="bg-black/50 p-6 border-l-4 border-yellow-400">
+                        <p class="italic mb-2">"NR helped us turn a profit and find our audience when no one else would take a chance on our vision."</p>
+                        <p class="text-yellow-400">— Maria G., Filmmaker</p>
+                    </div>
+                </div>
+                <div class="md:w-1/2 relative">
+                    <div class="bg-yellow-400/10 border border-yellow-400/30 p-2 rotate-2">
+                        <img src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="About" class="w-full h-auto">
+                    </div>
+                    <div class="absolute -bottom-6 -left-6 bg-purple-900/80 p-4 w-1/2 -rotate-2">
+                        <h3 class="font-display text-xl text-yellow-400">Our Difference</h3>
+                        <ul class="list-disc pl-5 mt-2 text-sm">
+                            <li>No SVOD-first deals</li>
+                            <li>Transparent revenue shares</li>
+                            <li>Filmmaker empowerment</li>
+                            <li>Grassroots marketing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Filmmakers -->
+    <section id="filmmakers" class="py-20 bg-black">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-display text-center text-yellow-400 mb-16">FOR FILMMAKERS</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-purple-900/30 p-8 border border-purple-900 hover:border-yellow-400 transition">
+                    <div class="text-yellow-400 text-4xl mb-4">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="font-display text-2xl mb-4">What We Look For</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                            <span>Bold genre films with theatrical potential</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                            <span>Underrepresented voices & perspectives</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                            <span>Films that spark conversation & community</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-purple-900/30 p-8 border border-purple-900 hover:border-yellow-400 transition">
+                    <div class="text-yellow-400 text-4xl mb-4">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <h3 class="font-display text-2xl mb-4">What We Offer</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                            <span>Grassroots marketing & word-of-mouth</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                            <span>Merchandise tie-ins & sponsorship</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                            <span>Bundled deliverables & backend shares</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-purple-900/30 p-8 border border-purple-900 hover:border-yellow-400 transition">
+                    <div class="text-yellow-400 text-4xl mb-4">
+                        <i class="fas fa-road"></i>
+                    </div>
+                    <h3 class="font-display text-2xl mb-4">The Roadshow Model</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                            <span>Multi-city theatrical tour</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                            <span>Q&A sessions with filmmakers</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                            <span>Community-building events</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="max-w-3xl mx-auto bg-black/50 p-8 border border-yellow-400/30">
+                <h3 class="font-display text-2xl text-yellow-400 mb-6 text-center">SUBMIT YOUR FILM</h3>
+                <form class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm mb-1">Your Name</label>
+                            <input type="text" class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Email</label>
+                            <input type="email" class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm mb-1">Film Title</label>
+                        <input type="text" class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm mb-1">Genre</label>
+                        <select class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition">
+                            <option>Horror</option>
+                            <option>Sci-Fi</option>
+                            <option>Action</option>
+                            <option>Dark Comedy</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm mb-1">Film Link (Private screener)</label>
+                        <input type="text" class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm mb-1">Why is your film a good fit for Nouveau Roadshow?</label>
+                        <textarea class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition h-32"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-8 rounded-full transition">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Theaters -->
+    <section id="theaters" class="py-20 bg-gradient-to-b from-black via-purple-900/20 to-black">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-display text-center text-yellow-400 mb-16">FOR THEATERS</h2>
+            
+            <div class="flex flex-col md:flex-row items-center mb-16">
+                <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
+                    <h3 class="font-display text-2xl text-yellow-400 mb-4">How to Book a Film</h3>
+                    <p class="mb-6">We make it easy for independent theaters to program exciting, fresh content with built-in marketing support and community engagement.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="bg-yellow-400 text-black rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-4 mt-1">
+                                <span class="font-bold">1</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Browse Our Slate</h4>
+                                <p class="text-sm">View our current touring films and their available dates.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-yellow-400 text-black rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-4 mt-1">
+                                <span class="font-bold">2</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Contact Our Team</h4>
+                                <p class="text-sm">Let us know your preferred dates and any special requests.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-yellow-400 text-black rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-4 mt-1">
+                                <span class="font-bold">3</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Receive Materials</h4>
+                                <p class="text-sm">We provide everything you need: DCP, posters, trailers, social assets.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-yellow-400 text-black rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-4 mt-1">
+                                <span class="font-bold">4</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Host the Event</h4>
+                                <p class="text-sm">We'll help promote and you keep a generous percentage of ticket sales.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 bg-black/50 p-8 border border-yellow-400/30">
+                    <h3 class="font-display text-2xl text-yellow-400 mb-6 text-center">BOOK A SCREENING</h3>
+                    <form class="space-y-4">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm mb-1">Theater Name</label>
+                                <input type="text" class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-sm mb-1">Contact Person</label>
+                                <input type="text" class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition">
+                            </div>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm mb-1">Email</label>
+                                <input type="email" class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-sm mb-1">Phone</label>
+                                <input type="tel" class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Theater Location</label>
+                            <input type="text" class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Preferred Film/Date</label>
+                            <textarea class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition h-20"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-8 rounded-full transition">
+                                Submit Request
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="mt-16">
+                <h3 class="font-display text-2xl text-yellow-400 mb-6 text-center">RECENT PARTNER VENUES</h3>
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div class="bg-black/50 p-4 border border-purple-900 hover:border-yellow-400 transition text-center">
+                        <div class="text-yellow-400 text-3xl mb-3">
+                            <i class="fas fa-theater-masks"></i>
+                        </div>
+                        <h4 class="font-bold">Alamo Drafthouse</h4>
+                        <p class="text-sm">Various Locations</p>
+                    </div>
+                    <div class="bg-black/50 p-4 border border-purple-900 hover:border-yellow-400 transition text-center">
+                        <div class="text-yellow-400 text-3xl mb-3">
+                            <i class="fas fa-archway"></i>
+                        </div>
+                        <h4 class="font-bold">The Grand Illusion</h4>
+                        <p class="text-sm">Seattle, WA</p>
+                    </div>
+                    <div class="bg-black/50 p-4 border border-purple-900 hover:border-yellow-400 transition text-center">
+                        <div class="text-yellow-400 text-3xl mb-3">
+                            <i class="fas fa-landmark"></i>
+                        </div>
+                        <h4 class="font-bold">The Texas Theatre</h4>
+                        <p class="text-sm">Dallas, TX</p>
+                    </div>
+                    <div class="bg-black/50 p-4 border border-purple-900 hover:border-yellow-400 transition text-center">
+                        <div class="text-yellow-400 text-3xl mb-3">
+                            <i class="fas fa-city"></i>
+                        </div>
+                        <h4 class="font-bold">The Roxie</h4>
+                        <p class="text-sm">San Francisco, CA</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tour Schedule -->
+    <section id="tour" class="py-20 bg-black">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-display text-center text-yellow-400 mb-6">FILM SCHEDULE</h2>
+            <p class="text-center max-w-2xl mx-auto mb-16">Our current slate of films playing independent theaters across the country. Check back often for updates!</p>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <div class="bg-purple-900/20 border border-purple-900 hover:border-yellow-400 transition group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1542204165-65bfec72f809?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Film" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <h3 class="font-display text-2xl">MIDNIGHT RADIO</h3>
+                            <p class="text-sm text-yellow-400">Sci-Fi/Horror</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="text-sm">
+                                <i class="fas fa-calendar-alt text-yellow-400 mr-2"></i>
+                                <span>Jun 15 - Aug 30</span>
+                            </div>
+                            <div class="text-sm">
+                                <i class="fas fa-map-marker-alt text-yellow-400 mr-2"></i>
+                                <span>12 Cities</span>
+                            </div>
+                        </div>
+                        <p class="mb-4 text-sm">A late-night radio host discovers the terrifying truth behind her mysterious callers in this Lovecraftian horror tale.</p>
+                        <a href="#" class="text-yellow-400 hover:text-yellow-300 text-sm font-bold flex items-center transition">
+                            View Dates <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-purple-900/20 border border-purple-900 hover:border-yellow-400 transition group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Film" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <h3 class="font-display text-2xl">BLOOD MACHINE</h3>
+                            <p class="text-sm text-yellow-400">Action/Horror</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="text-sm">
+                                <i class="fas fa-calendar-alt text-yellow-400 mr-2"></i>
+                                <span>Jul 1 - Sep 15</span>
+                            </div>
+                            <div class="text-sm">
+                                <i class="fas fa-map-marker-alt text-yellow-400 mr-2"></i>
+                                <span>8 Cities</span>
+                            </div>
+                        </div>
+                        <p class="mb-4 text-sm">A neon-drenched cyberpunk revenge thriller about a mechanic hunting the AI that killed her brother.</p>
+                        <a href="#" class="text-yellow-400 hover:text-yellow-300 text-sm font-bold flex items-center transition">
+                            View Dates <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-purple-900/20 border border-purple-900 hover:border-yellow-400 transition group">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Film" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <h3 class="font-display text-2xl">THE LAST DRIVE-IN</h3>
+                            <p class="text-sm text-yellow-400">Dark Comedy</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="text-sm">
+                                <i class="fas fa-calendar-alt text-yellow-400 mr-2"></i>
+                                <span>Aug 5 - Oct 20</span>
+                            </div>
+                            <div class="text-sm">
+                                <i class="fas fa-map-marker-alt text-yellow-400 mr-2"></i>
+                                <span>10 Cities</span>
+                            </div>
+                        </div>
+                        <p class="mb-4 text-sm">A failing drive-in theater becomes the unlikely battleground for a group of misfits fighting corporate developers.</p>
+                        <a href="#" class="text-yellow-400 hover:text-yellow-300 text-sm font-bold flex items-center transition">
+                            View Dates <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <a href="#" class="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-8 rounded-full transition">
+                    View Film Releases
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sponsors & Merch -->
+    <section class="py-20 bg-gradient-to-b from-black via-purple-900/20 to-black">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-display text-center text-yellow-400 mb-16">SPONSORS & MERCH</h2>
+            
+            <div class="grid md:grid-cols-2 gap-12 mb-16">
+                <div>
+                    <h3 class="font-display text-2xl text-yellow-400 mb-6">SPONSOR A SCREENING</h3>
+                    <p class="mb-6">Local businesses can sponsor screenings in their area, reaching passionate film audiences while supporting independent cinema.</p>
+                    
+                    <div class="bg-black/50 p-6 border border-yellow-400/30 mb-8">
+                        <h4 class="font-bold text-lg mb-3">Sponsorship Includes:</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                                <span>Logo placement on all event materials</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                                <span>Mention in pre-show announcements</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                                <span>Social media shoutouts</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                                <span>Option to set up a merch table</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <a href="#" class="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-8 rounded-full transition">
+                        Learn About Sponsorship
+                    </a>
+                </div>
+                
+                <div>
+                    <h3 class="font-display text-2xl text-yellow-400 mb-6">OFFICIAL MERCH</h3>
+                    <p class="mb-6">Limited edition merchandise celebrating our films and the roadshow experience. All proceeds support our touring operations.</p>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-black/50 p-4 border border-purple-900 hover:border-yellow-400 transition text-center">
+                            <div class="bg-yellow-400/10 h-32 mb-3 flex items-center justify-center">
+                                <i class="fas fa-tshirt text-4xl text-yellow-400"></i>
+                            </div>
+                            <h4 class="font-bold">Tour T-Shirt</h4>
+                            <p class="text-sm text-yellow-400">$25</p>
+                        </div>
+                        <div class="bg-black/50 p-4 border border-purple-900 hover:border-yellow-400 transition text-center">
+                            <div class="bg-yellow-400/10 h-32 mb-3 flex items-center justify-center">
+                                <i class="fas fa-book-open text-4xl text-yellow-400"></i>
+                            </div>
+                            <h4 class="font-bold">Program Zine</h4>
+                            <p class="text-sm text-yellow-400">$15</p>
+                        </div>
+                        <div class="bg-black/50 p-4 border border-purple-900 hover:border-yellow-400 transition text-center">
+                            <div class="bg-yellow-400/10 h-32 mb-3 flex items-center justify-center">
+                                <i class="fas fa-sticky-note text-4xl text-yellow-400"></i>
+                            </div>
+                            <h4 class="font-bold">Vintage Poster</h4>
+                            <p class="text-sm text-yellow-400">$30</p>
+                        </div>
+                        <div class="bg-black/50 p-4 border border-purple-900 hover:border-yellow-400 transition text-center">
+                            <div class="bg-yellow-400/10 h-32 mb-3 flex items-center justify-center">
+                                <i class="fas fa-ticket-alt text-4xl text-yellow-400"></i>
+                            </div>
+                            <h4 class="font-bold">Stub Collection</h4>
+                            <p class="text-sm text-yellow-400">$20</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="max-w-4xl mx-auto bg-black/50 p-8 border border-yellow-400/30">
+                <h3 class="font-display text-2xl text-yellow-400 mb-6 text-center">JOIN THE MOVEMENT</h3>
+                <p class="text-center mb-6">Sign up for our newsletter to get tour updates, merch drops, and exclusive content.</p>
+                <form class="flex flex-col md:flex-row gap-4">
+                    <input type="email" placeholder="Your email" class="flex-grow bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-3 outline-none transition">
+                    <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-8 rounded-full transition whitespace-nowrap">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Press & Media -->
+    <section id="press" class="py-20 bg-black">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-display text-center text-yellow-400 mb-16">PRESS & MEDIA</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-purple-900/20 p-8 border border-purple-900 hover:border-yellow-400 transition">
+                    <div class="text-yellow-400 text-4xl mb-4">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3 class="font-display text-2xl mb-4">Press Kit</h3>
+                    <p class="mb-6">Download our press materials including high-res logos, stills, trailers, and team bios.</p>
+                    <a href="#" class="text-yellow-400 hover:text-yellow-300 font-bold flex items-center transition">
+                        Download <i class="fas fa-arrow-down ml-2"></i>
+                    </a>
+                </div>
+                
+                <div class="bg-purple-900/20 p-8 border border-purple-900 hover:border-yellow-400 transition">
+                    <div class="text-yellow-400 text-4xl mb-4">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <h3 class="font-display text-2xl mb-4">Filmmaker Testimonials</h3>
+                    <p class="italic mb-4">"NR helped us turn a profit and find our audience when no one else would take a chance on our vision."</p>
+                    <p class="text-yellow-400">— Maria G., Director</p>
+                </div>
+                
+                <div class="bg-purple-900/20 p-8 border border-purple-900 hover:border-yellow-400 transition">
+                    <div class="text-yellow-400 text-4xl mb-4">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <h3 class="font-display text-2xl mb-4">Press Highlights</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="font-bold">"The Punk Rock of Film Distribution"</p>
+                            <p class="text-sm">IndieWire</p>
+                        </div>
+                        <div>
+                            <p class="font-bold">"Reviving the Roadshow Model"</p>
+                            <p class="text-sm">Filmmaker Magazine</p>
+                        </div>
+                        <div>
+                            <p class="font-bold">"Where Cinema Meets Community"</p>
+                            <p class="text-sm">The Hollywood Reporter</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <h3 class="font-display text-2xl text-yellow-400 mb-6 text-center">PRESS INQUIRIES</h3>
+                <form class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm mb-1">Your Name</label>
+                            <input type="text" class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Outlet</label>
+                            <input type="text" class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition">
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm mb-1">Email</label>
+                            <input type="email" class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Phone</label>
+                            <input type="tel" class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm mb-1">Subject</label>
+                        <input type="text" class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm mb-1">Message</label>
+                        <textarea class="w-full bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition h-32"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-8 rounded-full transition">
+                            Submit Inquiry
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black/80 border-t border-purple-900 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="font-display text-xl text-yellow-400 mb-4">NOUVEAU ROADSHOW</h3>
+                    <p class="mb-4">Independent. Theatrical. Unapologetic.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-yellow-400 hover:text-yellow-300 transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-yellow-400 hover:text-yellow-300 transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-yellow-400 hover:text-yellow-300 transition">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-yellow-400 hover:text-yellow-300 transition">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-display text-xl text-yellow-400 mb-4">QUICK LINKS</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-yellow-400 transition">Home</a></li>
+                        <li><a href="#about" class="hover:text-yellow-400 transition">About</a></li>
+                        <li><a href="#filmmakers" class="hover:text-yellow-400 transition">For Filmmakers</a></li>
+                        <li><a href="#theaters" class="hover:text-yellow-400 transition">For Theaters</a></li>
+                        <li><a href="#tour" class="hover:text-yellow-400 transition">Tour Schedule</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-display text-xl text-yellow-400 mb-4">CONTACT</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-yellow-400 mt-1 mr-2"></i>
+                            <span>bookings@nouvroadshow.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone text-yellow-400 mt-1 mr-2"></i>
+                            <span>(555) 123-4567</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-yellow-400 mt-1 mr-2"></i>
+                            <span>Los Angeles, CA</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-display text-xl text-yellow-400 mb-4">NEWSLETTER</h3>
+                    <p class="mb-4">Stay updated with our latest tours and releases.</p>
+                    <form class="flex">
+                        <input type="email" placeholder="Your email" class="flex-grow bg-black/50 border border-purple-900 focus:border-yellow-400 px-4 py-2 outline-none transition">
+                        <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-black px-4 transition">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="border-t border-purple-900 pt-8 text-center text-sm">
+                <p>&copy; 2023 Nouveau Roadshow. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Next Up Card (Less Intrusive) -->
+    <div class="next-up-card">
+        <div class="bg-black/90 backdrop-blur-md border border-yellow-400 rounded-lg shadow-lg overflow-hidden w-64">
+            <div class="bg-yellow-400 text-black p-3 font-display text-lg">
+                <i class="fas fa-clock mr-2"></i> Next Up
+            </div>
+            <div class="p-4">
+                <h4 class="font-bold mb-1">MIDNIGHT RADIO</h4>
+                <p class="text-sm text-gray-300 mb-2">Jun 15 - Aug 30</p>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-yellow-400">12 Cities</span>
+                    <a href="#tour" class="text-yellow-400 hover:text-yellow-300 transition flex items-center">
+                        View <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show next-up-card after scrolling
+        window.addEventListener('scroll', function() {
+            const nextUpCard = document.querySelector('.next-up-card');
+            if (window.scrollY > 300) {
+                nextUpCard.classList.add('visible');
+            } else {
+                nextUpCard.classList.remove('visible');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Mobile menu toggle would go here
+    </script>
+</body>
+</html>
